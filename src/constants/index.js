@@ -17,5 +17,5 @@ export const ENV_VARS = {
 
 
 
-// mongodb+srv://ivasiunko:EKGBT4AsyFqRPwIk@cluster0.os7sbzf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
 
