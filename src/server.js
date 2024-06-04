@@ -15,6 +15,7 @@ export const setupServer = () => {
 
   app.use(express.json());
   app.use(cors());
+  app.use(express.json());
   app.use(
     pino({
       transport: {
@@ -23,10 +24,10 @@ export const setupServer = () => {
     }),
   );
 
-  app.use(contactsRouter)
+  app.use(contactsRouter);
 
-  app.use('*', notFoundHandler);
   app.use(errorHandler);
+  app.use('*', notFoundHandler);
 
   const PORT = env(ENV_VARS.PORT, 3000);
   app.listen(PORT, () => {
