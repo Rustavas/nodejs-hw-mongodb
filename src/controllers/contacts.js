@@ -10,7 +10,7 @@ export const getContactsController = async (req, res) => {
   });
 }
 
-export const getContactByIdController = async (req, res) => {
+export const getContactByIdController = async (req, res, next) => {
 
   const contactId = req.params.contactId;
   const contact = await getContactById(contactId);
@@ -50,7 +50,7 @@ export const createContactController = async (req, res, next) => {
 
 };
 
-export const patchContactController = async (req, res) => {
+export const patchContactController = async (req, res, next) => {
 
   const { body } = req;
   const { contactId } = req.params;
