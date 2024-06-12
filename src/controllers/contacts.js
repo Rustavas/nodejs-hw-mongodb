@@ -1,8 +1,19 @@
 import { createContact, deleteContact, getAllContacts, getContactById, upsertContact } from "../services/contacts.js";
 import createHttpError from "http-errors";
+import { parsePaginationParams } from "../utils/parsePaginationParams.js";
+
 
 export const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perpage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = req.query;
+
+  const contacts = await getAllContacts({ 
+    page, 
+    perpage, 
+    sortBy, 
+    sortOrder,
+  });
+
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -10,7 +21,7 @@ export const getContactsController = async (req, res) => {
   });
 }
 
-export const getContactByIdController = async (req, res, next) => {
+export const getContactByIdController = async (req, res) => {
 
   const contactId = req.params.contactId;
   const contact = await getContactById(contactId);
@@ -22,13 +33,13 @@ export const getContactByIdController = async (req, res, next) => {
   })
 }
 
-export const createContactController = async (req, res, next) => {
+export const createContactController = async (req, res) => {
 
   const { body } = req;
-  if(!body.name){
+  if (!body.name) {
     throw createHttpError(400, 'name is required');
   }
-  if(!body.phoneNumber){
+  if (!body.phoneNumber) {
     throw createHttpError(400, 'phoneNumber is required');
   }
   const contact = await createContact(body);
@@ -41,7 +52,7 @@ export const createContactController = async (req, res, next) => {
 
 };
 
-export const patchContactController = async (req, res, next) => {
+export const patchContactController = async (req, res) => {
 
   const { body } = req;
   const { contactId } = req.params;
@@ -55,7 +66,7 @@ export const patchContactController = async (req, res, next) => {
 
 };
 
-export const deleteContactByIdController = async (req, res, next) => {
+export const deleteContactByIdController = async (req, res) => {
 
   const contactId = req.params.contactId;
   await deleteContact(contactId);
