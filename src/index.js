@@ -5,6 +5,5 @@ import { Contact } from "./db/models/contact.js"
 (async () => {
   await initMongoConnection();
   const contacts = await Contact.find({});
-  // console.log(contacts)
   setupServer();
 })();
