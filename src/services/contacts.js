@@ -49,16 +49,9 @@ export const getAllContacts = async ({
   };
 }
 
-export const getContactById = async (contactId) => {
-
-  const contact = await Contact.findById(contactId);
-
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  };
-
-  return contact;
-}
+export const getContactById = async (id, userId) => {
+  return await Contact.findById({ _id: id, userId });
+};
 
 export const createContact = async (payload) => {
   const contact = await Contact.create(payload);
