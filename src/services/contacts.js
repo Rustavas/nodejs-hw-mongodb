@@ -38,7 +38,7 @@ export const getAllContacts = async ({
 
   const [contactsCount, contacts] = await Promise.all(
     [Contact.find({ userId }).countDocuments(),
-    Contact.find()
+    Contact.find({ userId })
       .skip(skip)
       .limit(perPage)
       .sort({
