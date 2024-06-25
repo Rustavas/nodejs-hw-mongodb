@@ -60,7 +60,7 @@ const createSession = () => {
   return {
     accessToken,
     refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + 15 * 60 * 1000),
+    accessTokenValidUntil: new Date(Date.now() + 1000 * 60 * 60),
     refreshTokenValidUntil: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
   };
 };
