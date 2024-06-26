@@ -8,7 +8,7 @@ import { loginUserSchema } from "../validation/loginUserSchema.js";
 const authRouter = Router();
 authRouter.post('/register', validateBody(registerUserSchema), ctrlWrapper(registerUserController));
 authRouter.post('/login', validateBody(loginUserSchema), ctrlWrapper(loginUserController));
-authRouter.post('/refresh-token', ctrlWrapper(refreshTokenController));
+authRouter.post('/refresh', ctrlWrapper(refreshTokenController));
 authRouter.post('/logout', ctrlWrapper(logoutController));
 
 
