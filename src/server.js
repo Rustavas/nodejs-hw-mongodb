@@ -31,7 +31,7 @@ export const setupServer = () => {
   app.use(errorHandler);
   app.use('*', notFoundHandler);
 
-  const PORT = env(ENV_VARS.PORT, 3000);
+  const PORT = env(ENV_VARS.PORT, 3002);
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}!`);
   });

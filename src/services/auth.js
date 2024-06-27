@@ -1,8 +1,12 @@
 import createHttpError from 'http-errors';
+import jwt from 'jsonwebtoken';
 import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { Session } from '../db/models/session.js';
+import { ENV_VARS } from '../constants/index.js';
+import { sendMail } from '../utils/sendMail.js';
+import { env } from '../utils/env.js';
 
 export const createUser = async (payload) => {
   const user = await User.findOne({ email: payload.email });
@@ -67,7 +71,7 @@ const createSession = () => {
 
 
 
-export const refreshSession = async ( sessionId, refreshToken ) => {
+export const refreshSession = async (sessionId, refreshToken) => {
   const session = await Session.findOne({
     _id: sessionId,
     refreshToken,
@@ -90,3 +94,62 @@ export const refreshSession = async ( sessionId, refreshToken ) => {
     ...newSession,
   });
 };
+
+export const sendResetEmail = async (email) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found!');
+  };
+
+  const token = jwt.sign(
+    {
+      sub: user._id,
+      email
+    },
+    env(ENV_VARS.JWT_SECRET),
+    {
+      expiresIn: '5m'
+    }
+  );
+
+  try {
+    await sendMail({
+      html: `
+      <h1>Hello!</h1>
+      <p>
+        Here is your reset link <a href="${env(ENV_VARS.APP_DOMAIN)}/reset-pwd?token=${token}">Link</a>
+      </p>
+      `,
+      to: email,
+      from: env(ENV_VARS.SMTP_FROM),
+      subject: 'Reset your password!',
+    })
+  } catch (err) {
+    console.log(err);
+    throw createHttpError(500, 'Failed to send the email, please try again later.')
+  };
+};
+
+export const sendResetPwd = async ({ token, password }) => {
+
+  let tokenPayload;
+  try {
+    tokenPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET));
+  } catch (err) {
+    console.log(err);
+    throw createHttpError(401, 'Token is expired or invalid.')
+  }
+
+  const hashedPwd = await bcrypt.hash(password, 10);
+
+  await User.findOneAndUpdate(
+    {
+      _id: tokenPayload.sub,
+      email: tokenPayload.email,
+    },
+    {
+      password: hashedPwd,
+    }
+  )
+}
