@@ -1,3 +1,4 @@
+
 import { createUser, loginUser, logoutUser, refreshSession, sendResetEmail, sendResetPwd } from "../services/auth.js";
 
 const setupSessionCookies = (res, session) => {
@@ -66,8 +67,8 @@ export const refreshTokenController = async (req, res) => {
   })
 }
 
-export const sendResetEmailController= async (req, res) => {
-  await sendResetEmail(req.body.email, );
+export const sendResetEmailController = async (req, res) => {
+  await sendResetEmail(req.body.email,);
 
   res.json({
     status: 200,
@@ -76,7 +77,7 @@ export const sendResetEmailController= async (req, res) => {
   })
 }
 
-export const sendResetPwdController= async (req, res) => {
+export const sendResetPwdController = async (req, res) => {
   await sendResetPwd(req.body);
 
   res.json({

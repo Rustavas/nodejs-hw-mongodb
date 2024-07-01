@@ -1,5 +1,7 @@
 import { Contact } from "../db/models/contact.js"
 import createHttpError from 'http-errors';
+import { saveToCloudinary } from "../utils/saveToCloudinary.js";
+import { saveFile } from "../utils/saveFiles.js";
 
 const createPaginationInformation = (page, perPage, count) => {
 
@@ -64,27 +66,84 @@ export const getContactById = async (id, userId) => {
   return await Contact.findById({ _id: id, userId });
 };
 
-export const createContact = async (payload) => {
-  const newContact = new Contact(payload);
+export const createContact = async ({ photo, ...payload }) => {
+  const url = await saveFile(photo);
+
+  const newContact = await Contact.create({
+    ...payload,
+    photo: url,
+  });
+
   return await newContact.save();
 };
 
-export const upsertContact = async (id, payload, userId) => {
-  const contact = await Contact.findByIdAndUpdate(
-    { _id: id, userId },
+
+
+// 
+
+// export const upsertContact = async (id, payload, userId) => {
+//   const contact = await Contact.findByIdAndUpdate(
+//     { _id: id, userId },
+//     payload,
+//     { new: true },
+//   );
+
+//   if (!contact) {
+//     throw createHttpError(404, 'Contact not found');
+//   };
+
+//   return contact;
+// };
+
+// 
+
+// export const upsertContact = async (
+//   id,
+//   { photo, ...payload },
+//   options = {},
+// ) => {
+//   const url = await saveFile(photo);
+
+//   const rawResult = await Contact.findByIdAndUpdate(
+//     id,
+//     { ...payload, photoUrl: url },
+//     {
+//       new: true,
+//       includeResultMetadata: true,
+//       ...options,
+//     },
+//   );
+
+//   if (!rawResult || !rawResult.value) {
+//     throw createHttpError(404, 'Student not found');
+//   }
+
+//   return {
+//     student: rawResult.value,
+//     isNew: !rawResult?.lastErrorObject?.updatedExisting,
+//   };
+// };
+
+export const upsertContact = async (
+  { _id: ID, userId },
+  payload,
+  options = {},
+) => {
+  const rawResult = await Contact.findOneAndUpdate(
+    { _id: ID, userId },
     payload,
-    { new: true },
+    {
+      new: true,
+
+      ...options,
+    },
   );
-
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  };
-
-  return contact;
+  return rawResult;
 };
 
+// 
 export const deleteContact = async (contactId, userId) => {
-  
+
   const contact = await Contact.findByIdAndDelete({ _id: contactId, userId });
 
   if (!contact) {

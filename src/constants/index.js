@@ -1,9 +1,12 @@
+import path from "node:path";
+
 export const ENV_VARS = {
   PORT: 'PORT',
   MONGODB_USER: 'MONGODB_USER',
   MONGODB_PASSWORD: 'MONGODB_PASSWORD',
   MONGODB_URL: 'MONGODB_URL',
   MONGODB_DB: 'MONGODB_DB',
+
   SMTP_HOST: 'SMTP_HOST',
   SMTP_PORT: 'SMTP_PORT',
   SMTP_USER: 'SMTP_USER',
@@ -11,14 +14,22 @@ export const ENV_VARS = {
   SMTP_FROM: 'SMTP_FROM',
   JWT_SECRET: 'JWT_SECRET',
   APP_DOMAIN: 'APP_DOMAIN',
+  BACKEND_HOST: 'BACKEND_HOST',
+
+  CLOUDINARY_NAME: 'CLOUDINARY_NAME',
+  CLOUDINARY_API_KEY: 'CLOUDINARY_API_KEY',
+  CLOUDINARY_API_SECRET: 'CLOUDINARY_API_SECRET',
+  IS_CLOUDINARY_ENABLED: 'IS_CLOUDINARY_ENABLED'
 };
 
+export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+export const UPLOAD_DIR = path.join(process.cwd(), 'upload');
+export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
 
 
 
-
-
-
+export const FIFTEEN_MINUTES = 15 * 60 * 1000;
+export const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
 
 
 
