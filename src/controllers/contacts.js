@@ -3,7 +3,6 @@ import createHttpError from "http-errors";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { saveToCloudinary } from "../utils/saveToCloudinary.js";
 import { ENV_VARS } from "../constants/index.js";
-import { saveFile } from "../utils/saveFiles.js";
 import { saveFileToLocal } from "../utils/saveFileToLocal.js";
 import { env } from "../utils/env.js";
 
@@ -40,10 +39,10 @@ export const getContactByIdController = async (req, res) => {
 
 
 export const createContactController = async (req, res) => {
-  // console.log(req)
+
   const { body, file } = req;
   const userId = req.user._id;
-  // console.log(body)
+
   if (!body.name) {
     throw createHttpError(400, 'name is required');
   }
@@ -67,7 +66,7 @@ export const patchContactController = async (req, res) => {
   const userId = req.user._id;
   const ID = req.params.contactId;
   const photo = req.file;
-// console.log(photo)
+
   let photoUrl;
 
   if (photo) {
@@ -78,9 +77,9 @@ export const patchContactController = async (req, res) => {
     }
 
   }
-console.log(photoUrl)
+  console.log(photoUrl)
   const contact = await upsertContact({ _id: ID, userId }, { ...body, photo: photoUrl });
-// console.log(contact)
+
   if (!contact) {
     return res.status(404).json({
       status: 404,

@@ -1,6 +1,5 @@
 import { Contact } from "../db/models/contact.js"
 import createHttpError from 'http-errors';
-import { saveToCloudinary } from "../utils/saveToCloudinary.js";
 import { saveFile } from "../utils/saveFiles.js";
 
 const createPaginationInformation = (page, perPage, count) => {
@@ -76,26 +75,6 @@ export const createContact = async ({ photo, ...payload }) => {
 
   return await newContact.save();
 };
-
-
-
-// 
-
-// export const upsertContact = async (id, payload, userId) => {
-//   const contact = await Contact.findByIdAndUpdate(
-//     { _id: id, userId },
-//     payload,
-//     { new: true },
-//   );
-
-//   if (!contact) {
-//     throw createHttpError(404, 'Contact not found');
-//   };
-
-//   return contact;
-// };
-
-// 
 
 export const upsertContact = async (
   { _id: ID, userId },
