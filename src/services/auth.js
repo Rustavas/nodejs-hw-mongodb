@@ -45,7 +45,7 @@ export const loginUser = async (payload) => {
     userId: user._id,
     accessToken,
     refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + 1000 * 15 * 60),
+    accessTokenValidUntil: new Date(Date.now() + 1000 * 60 * 60),
     refreshTokenValidUntil: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
   });
 };

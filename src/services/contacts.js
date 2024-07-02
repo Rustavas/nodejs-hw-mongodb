@@ -97,33 +97,6 @@ export const createContact = async ({ photo, ...payload }) => {
 
 // 
 
-// export const upsertContact = async (
-//   id,
-//   { photo, ...payload },
-//   options = {},
-// ) => {
-//   const url = await saveFile(photo);
-
-//   const rawResult = await Contact.findByIdAndUpdate(
-//     id,
-//     { ...payload, photoUrl: url },
-//     {
-//       new: true,
-//       includeResultMetadata: true,
-//       ...options,
-//     },
-//   );
-
-//   if (!rawResult || !rawResult.value) {
-//     throw createHttpError(404, 'Student not found');
-//   }
-
-//   return {
-//     student: rawResult.value,
-//     isNew: !rawResult?.lastErrorObject?.updatedExisting,
-//   };
-// };
-
 export const upsertContact = async (
   { _id: ID, userId },
   payload,
@@ -134,7 +107,6 @@ export const upsertContact = async (
     payload,
     {
       new: true,
-
       ...options,
     },
   );

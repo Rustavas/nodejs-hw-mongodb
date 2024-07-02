@@ -5,6 +5,7 @@ import { saveToCloudinary } from "../utils/saveToCloudinary.js";
 import { ENV_VARS } from "../constants/index.js";
 import { saveFile } from "../utils/saveFiles.js";
 import { saveFileToLocal } from "../utils/saveFileToLocal.js";
+import { env } from "../utils/env.js";
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -61,13 +62,12 @@ export const createContactController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res) => {
-  // console.log(req.body)
-  // console.log(res)
+
   const body = req.body;
   const userId = req.user._id;
   const ID = req.params.contactId;
   const photo = req.file;
-
+// console.log(photo)
   let photoUrl;
 
   if (photo) {
@@ -78,9 +78,9 @@ export const patchContactController = async (req, res) => {
     }
 
   }
-
-  const contact = await upsertContact({ _id: ID, userId }, { ...body, photo });
-
+console.log(photoUrl)
+  const contact = await upsertContact({ _id: ID, userId }, { ...body, photo: photoUrl });
+// console.log(contact)
   if (!contact) {
     return res.status(404).json({
       status: 404,
