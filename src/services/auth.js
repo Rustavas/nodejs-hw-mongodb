@@ -137,7 +137,7 @@ export const sendResetPwd = async ({ token, password }) => {
   try {
     tokenPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET));
   } catch (err) {
-    console.log(err);
+
     throw createHttpError(401, 'Token is expired or invalid.')
   }
 
